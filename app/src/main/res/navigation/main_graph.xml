@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph.xml"
+    app:startDestination="@id/loadingFragment">
+
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.loading_fragment.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" />
+    <fragment
+        android:id="@+id/calculationFragment"
+        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.calculation_fragment.CalculationFragment"
+        android:label="fragment_calculation"
+        tools:layout="@layout/fragment_calculation">
+        <action
+            android:id="@+id/go_selecting"
+            app:destination="@id/selectCurrenciesFragment">
+            <argument
+                android:name="id"
+                app:argType="string" />
+        </action>
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/selectCurrenciesFragment"
+        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.currency_select_fragment.SelectCurrenciesFragment"
+        android:label="fragment_selectct_currencies"
+        tools:layout="@layout/fragment_selectct_currencies">
+        <action
+            android:id="@+id/go_calculating"
+            app:destination="@id/calculationFragment">
+            <argument
+                android:name="id"
+                app:argType="string" />
+        </action>
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+    </fragment>
+</navigation>
