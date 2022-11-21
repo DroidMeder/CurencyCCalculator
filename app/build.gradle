@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'kg.simulators_life.curencyccalculator'
+    namespace 'kg.simulators_life.currency_calculator'
     compileSdk 33
 
     defaultConfig {
-        applicationId "kg.simulators_life.curencyccalculator"
+        applicationId "kg.simulators_life.currency_calculator"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -74,14 +74,12 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation 'com.tickaroo.tikxml:annotation:0.8.13'
-    //noinspection GradleDependency
-    implementation 'com.tickaroo.tikxml:retrofit-converter:0.8.13'
-    //noinspection GradleDependency
-    implementation 'com.tickaroo.tikxml:core:0.8.13'
-
-    //noinspection GradleDependency
-    kapt 'com.tickaroo.tikxml:processor:0.8.13'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    implementation('com.squareup.retrofit2:converter-simplexml:2.9.0') {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.44.2'

@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/loadingFragment"
-        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.loading_fragment.LoadingFragment"
+        android:name="kg.simulators_life.currency_calculator.presentation.fragments.loading_fragment.LoadingFragment"
         android:label="fragment_loading"
         tools:layout="@layout/fragment_loading" />
     <fragment
         android:id="@+id/calculationFragment"
-        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.calculation_fragment.CalculationFragment"
+        android:name="kg.simulators_life.currency_calculator.presentation.fragments.calculation_fragment.CalculationFragment"
         android:label="fragment_calculation"
         tools:layout="@layout/fragment_calculation">
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectCurrenciesFragment"
-        android:name="kg.simulators_life.curencyccalculator.presentation.fragments.currency_select_fragment.SelectCurrenciesFragment"
+        android:name="kg.simulators_life.currency_calculator.presentation.fragments.currency_select_fragment.SelectCurrenciesFragment"
         android:label="fragment_selectct_currencies"
         tools:layout="@layout/fragment_selectct_currencies">
         <action

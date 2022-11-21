@@ -6,4 +6,10 @@
     <string name="ru">RU</string>
     <string name="usd">USD</string>
     <string name="check">check</string>
+    <string name="converter">Конвертер валют</string>
+    <string name="choose_currency">Выбор валют</string>
+    <string name="cancel">Отмена</string>
+    <string name="reverse">reverse</string>
+    <string name="_1">1</string>
+    <string name="_0">0</string>
 </resources>

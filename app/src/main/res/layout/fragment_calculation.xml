@@ -1,83 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_login_end"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/converter" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/v_divider"
+        style="@style/Divider"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_login_end" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0"
+        app:layout_constraintTop_toBottomOf="@id/v_divider" />
+
+    <View
+        android:id="@+id/v_left"
+        android:layout_width="60dp"
+        android:layout_height="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        app:layout_constraintEnd_toEndOf="@id/guideline2" />
+
+    <View
+        android:id="@+id/v_right"
+        android:layout_width="60dp"
+        android:layout_height="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        app:layout_constraintStart_toStartOf="@id/guideline2" />
+
+    <ImageView
+        android:id="@+id/iv_rev"
+        android:layout_width="300dp"
+        android:layout_height="15dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/reverse"
+        android:scaleType="center"
+        android:src="@drawable/reverse"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/et_left"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:textSize="32sp"
-        android:inputType="numberDecimal"
         android:backgroundTint="@android:color/transparent"
         android:focusableInTouchMode="true"
-        app:layout_constraintStart_toStartOf="@id/tv_btn_left"
-        app:layout_constraintEnd_toEndOf="@id/tv_btn_left"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="24.7"
+        android:hint="@string/_0"
         android:importantForAutofill="no"
-        tools:ignore="LabelFor"/>
-
-    <EditText
-        android:id="@+id/et_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:textSize="32sp"
         android:inputType="numberDecimal"
-        android:backgroundTint="@android:color/transparent"
-        android:focusableInTouchMode="true"
-        app:layout_constraintStart_toStartOf="@id/tv_btn_right"
-        app:layout_constraintEnd_toEndOf="@id/tv_btn_right"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="247.76"
-        android:importantForAutofill="no"
+        android:maxLength="23"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline5"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toTopOf="@id/guideline4"
         tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/tv_left_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_marginTop="40dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
         android:text="@string/ru"
-        app:layout_constraintStart_toStartOf="@id/tv_btn_left"
-        app:layout_constraintEnd_toEndOf="@id/tv_btn_left"
-        app:layout_constraintTop_toBottomOf="@id/et_left"/>
-
-    <TextView
-        android:id="@+id/tv_right_currency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_marginTop="40dp"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:text="@string/usd"
-        app:layout_constraintStart_toStartOf="@id/tv_btn_right"
-        app:layout_constraintEnd_toEndOf="@id/tv_btn_right"
-        app:layout_constraintTop_toBottomOf="@id/et_right"/>
-
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toTopOf="@id/guideline5" />
 
     <TextView
         android:id="@+id/tv_btn_left"
         style="@style/Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@id/tv_left_currency" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintTop_toBottomOf="@id/v_divider" />
+
+
+    <EditText
+        android:id="@+id/et_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:focusableInTouchMode="true"
+        android:hint="@string/_0"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:maxLength="23"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline5"
+        app:layout_constraintEnd_toEndOf="@id/guideline3"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="@id/guideline4"
+        tools:ignore="LabelFor"
+        tools:text="247.7664576" />
+
+    <TextView
+        android:id="@+id/tv_right_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/usd"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline3"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="@id/guideline5" />
 
     <TextView
         android:id="@+id/tv_btn_right"
         style="@style/Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@id/guideline3"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@id/tv_right_currency" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="1"
+        app:layout_constraintTop_toBottomOf="@id/v_divider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

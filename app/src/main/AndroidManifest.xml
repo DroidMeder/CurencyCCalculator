@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kg.simulators_life.curencyccalculator"
+    package="kg.simulators_life.currency_calculator"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -17,8 +17,9 @@
         android:theme="@style/Theme.CurencyCCalculator"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.main_activity.MainActivity"
-            android:exported="true">
+            android:name="kg.simulators_life.currency_calculator.presentation.main_activity.MainActivity"
+            android:exported="true"
+            android:screenOrientation="userPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
