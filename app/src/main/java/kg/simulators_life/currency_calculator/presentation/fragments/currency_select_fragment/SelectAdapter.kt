@@ -1,5 +1,6 @@
 package kg.simulators_life.currency_calculator.presentation.fragments.currency_select_fragment
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -36,8 +37,10 @@ class SelectAdapter : RecyclerView.Adapter<SelectAdapter.SelectHolder>() {
         this.onItemClick = onItemClick
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<Valute?>) {
         this.list = list.requireNoNulls()
+        notifyDataSetChanged()
     }
 
     fun chosenItem(id: String?) {

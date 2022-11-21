@@ -2,6 +2,8 @@ package kg.simulators_life.currency_calculator.presentation.fragments.currency_s
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -9,12 +11,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kg.simulators_life.core.base.BaseFragment
-import kg.simulators_life.currency_calculator.databinding.FragmentSelectctCurrenciesBinding
+import kg.simulators_life.currency_calculator.databinding.FragmentSelectCurrenciesBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SelectCurrenciesFragment : BaseFragment<FragmentSelectctCurrenciesBinding,
+class SelectCurrenciesFragment : BaseFragment<FragmentSelectCurrenciesBinding,
         SelectCurrenciesViewModel>(), CurrencyClicked {
 
     private var args: SelectCurrenciesFragmentArgs? = null
@@ -29,8 +31,8 @@ class SelectCurrenciesFragment : BaseFragment<FragmentSelectctCurrenciesBinding,
         ViewModelProvider(this)[SelectCurrenciesViewModel::class.java]
     }
 
-    override fun inflateViewBinding(inflater: LayoutInflater): FragmentSelectctCurrenciesBinding {
-        return FragmentSelectctCurrenciesBinding.inflate(inflater)
+    override fun inflateViewBinding(inflater: LayoutInflater): FragmentSelectCurrenciesBinding {
+        return FragmentSelectCurrenciesBinding.inflate(inflater)
     }
 
     override fun initViewModel() {
@@ -45,22 +47,31 @@ class SelectCurrenciesFragment : BaseFragment<FragmentSelectctCurrenciesBinding,
         loadLocalState()
     }
 
+    private fun hideKeyboard() {
+        requireActivity().let {
+            val imm = ContextCompat.getSystemService(it, InputMethodManager::class.java)
+            imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+        }
+    }
+
     override fun initListener() {
         super.initListener()
+        hideKeyboard()
+
         binding.btnCancel.setOnClickListener {
             findNavController().navigateUp()
         }
     }
 
     override fun clickOnItem(id: String) {
-        println("0...........$id")
-        if (id.isNotEmpty() && args != null && !args?.id.isNullOrEmpty()) {
+        if (id.isNotEmpty() && args != null && !args?.id.isNullOrEmpty() &&
+            !args?.idState.isNullOrEmpty() && !args?.inputField.isNullOrEmpty()) {
             if (args!!.id!!.startsWith("R")) {
                 findNavController().navigate(SelectCurrenciesFragmentDirections
-                    .goCalculating("R$id"))
+                    .goCalculating("R$id", args!!.idState!!, args!!.inputField!!))
             } else {
                 findNavController().navigate(SelectCurrenciesFragmentDirections
-                    .goCalculating("L$id"))
+                    .goCalculating("L$id", args!!.idState!!, args!!.inputField!!))
             }
         }
     }

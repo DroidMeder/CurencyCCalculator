@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CalculationViewModel  @Inject constructor(
+class CalculationViewModel @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getCalculationUseCase: GetCalculationUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private var leftEntity = MutableSharedFlow<Valute>()
     private var rightEntity = MutableSharedFlow<Valute>()
@@ -29,14 +29,13 @@ class CalculationViewModel  @Inject constructor(
     fun getCurrency(id: String, side: String) {
         viewModelScope.launch {
             getCurrencyUseCase(id).collectLatest {
-                println("00001------$id-----"+it.toString())
-                    if (it != null) {
-                        if (side == "R") {
-                            rightEntity.emit(it)
-                        } else {
-                            leftEntity.emit(it)
-                        }
+                if (it != null) {
+                    if (side == "R") {
+                        rightEntity.emit(it)
+                    } else {
+                        leftEntity.emit(it)
                     }
+                }
             }
         }
     }
@@ -44,7 +43,7 @@ class CalculationViewModel  @Inject constructor(
     fun getCalculation(idA: String, idB: String, value: String, operand: String) {
         viewModelScope.launch {
             getCalculationUseCase(idA, idB, value, operand).collectLatest {
-                println("00002------$idA---$idB--" + it.toString())
+                println("-00----$idA-----$idB------${it.toString()}-----------")
                 if (it != null) {
                     result.emit(it)
                 } else {

@@ -38,7 +38,7 @@ class ItemMapper {
         )
     }
 
-    fun mapItemDbModelToEntity(valuteDto: ValuteDto?): Valute {
+    private fun mapItemDbModelToEntity(valuteDto: ValuteDto?): Valute {
         return Valute(
                 iD = valuteDto?.iD,
                 numCode = valuteDto?.numCode,

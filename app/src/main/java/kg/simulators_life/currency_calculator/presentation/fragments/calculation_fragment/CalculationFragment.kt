@@ -31,7 +31,7 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
     }
 
     override val viewModel: CalculationViewModel by lazy {
-        ViewModelProvider(requireActivity())[CalculationViewModel::class.java]
+        ViewModelProvider(this)[CalculationViewModel::class.java]
     }
 
     override fun inflateViewBinding(inflater: LayoutInflater): FragmentCalculationBinding {
@@ -41,25 +41,44 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
     override fun initView() {
         super.initView()
         if (args != null) {
-            println("------1---")
             val temp = args!!.id
             if (temp != null) {
-                println("----2---$temp--")
                 if (temp.startsWith("R")) {
-                    setRightValues(temp.drop(1))
+                    getSavedInstance(temp, "R")
                 } else {
-                    setLeftValues(temp.drop(1))
+                    getSavedInstance(temp, "")
                 }
             } else {
-                println("----4-----")
                 setLeftValues()
                 setRightValues()
             }
         } else {
-            println("----3-----")
             setLeftValues()
             setRightValues()
         }
+    }
+
+    private fun getSavedInstance(value: String, id: String) = with(binding) {
+        swipeRight = true
+        etLeft.isFocusable = true
+        etLeft.requestFocus()
+        etRight.clearFocus()
+
+        if (id == "R") {
+            setRightValues(value.drop(1))
+            setLeftValues(args!!.idState!!)
+            viewModel.getCalculation(args!!.idState!!, value.drop(1),
+                args?.inputField.toString(), "*")
+        } else {
+            setLeftValues(value.drop(1))
+            setRightValues(args!!.idState!!)
+            viewModel.getCalculation(value.drop(1), args!!.idState!!,
+                args?.inputField.toString(), "*")
+        }
+
+        etLeft.setText(args?.inputField.toString())
+       // viewModel.getCalculation(idA, idB, etLeft.text.toString(), "*")
+        getResult()
     }
 
     private fun safeFlowGather(action: suspend () -> Unit) {
@@ -74,7 +93,6 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
         viewModel.getCurrency(drop, "R")
         safeFlowGather {
             viewModel.getRightEntity.collectLatest {
-                println("3-----------" + it.toString())
                 binding.tvRightCurrency.text = it.charCode
                 idB = it.iD.toString()
             }
@@ -85,7 +103,6 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
         viewModel.getCurrency(drop, "L")
         safeFlowGather {
             viewModel.getLeftEntity.collectLatest {
-                println("2-----------" + it.toString())
                 binding.tvLeftCurrency.text = it.charCode
                 idA = it.iD.toString()
             }
@@ -96,15 +113,13 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
         super.initListener()
         tvBtnLeft.setOnClickListener {
             findNavController().navigate(
-                CalculationFragmentDirections
-                    .goSelecting("L$idA")
+                CalculationFragmentDirections.goSelecting("L$idA", idB, etLeft.text.toString())
             )
         }
 
         tvBtnRight.setOnClickListener {
             findNavController().navigate(
-                CalculationFragmentDirections
-                    .goSelecting("R$idB")
+                CalculationFragmentDirections.goSelecting("R$idB", idA, etLeft.text.toString())
             )
         }
 
@@ -113,6 +128,7 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
             it.isFocusableInTouchMode = true
             it.isFocusable = true
             it.requestFocus()
+            etRight.setSelection(etRight.text.length)
             etLeft.clearFocus()
         }
 
@@ -121,11 +137,11 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
             it.isFocusableInTouchMode = true
             it.isFocusable = true
             it.requestFocus()
+            etLeft.setSelection(etLeft.text.length)
             etRight.clearFocus()
         }
 
         vRight.setOnClickListener {
-            println("right---------")
             with(binding) {
                 swipeRight = true
                 removeFocusFromFields()
@@ -134,7 +150,6 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
         }
 
         vLeft.setOnClickListener {
-            println("left-----------")
             with(binding) {
                 swipeLeft = true
                 removeFocusFromFields()
@@ -178,19 +193,16 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
                         etRight.textSize = 18f
                     }
                     in 16..20 -> {
-                        etRight.textSize = 12f
+                        etRight.textSize = 13f
                     }
                     else -> {
-                        etRight.textSize = 10f
+                        etRight.textSize = 11f
                     }
                 }
-                println("====$clickedRight=====1======$swipeRight=====")
                 if (clickedRight || swipeRight) {
                     viewModel.getCalculation(idA, idB, etRight.text.toString(), "/")
                     swipeRight = false
                     getResult(1)
-                } else {
-                    println("*********1**************")
                 }
             }
         })
@@ -211,29 +223,24 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
                         etLeft.textSize = 18f
                     }
                     in 16..20 -> {
-                        etLeft.textSize = 12f
+                        etLeft.textSize = 13f
                     }
                     else -> {
-                        etLeft.textSize = 10f
+                        etLeft.textSize = 11f
                     }
                 }
-                println("==$clickedLeft======0=====$swipeLeft=======")
                 if (clickedLeft || swipeLeft) {
                     viewModel.getCalculation(idA, idB, etLeft.text.toString(), "*")
                     swipeLeft = false
                     getResult()
-                } else {
-                    println("*********0**************")
                 }
             }
         })
     }
 
     private fun getResult(i: Int = 0) = with(binding) {
-        println("come res ----------$i----------")
         safeFlowGather {
             viewModel.getResult.take(1).collectLatest {
-                println("1res----------$it")
                 if (i == 0) {
                     etRight.setText(formatStr(it))
                 } else {

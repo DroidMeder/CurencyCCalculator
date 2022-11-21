@@ -14,6 +14,7 @@ import kg.simulators_life.core.base.BaseFragment
 import kg.simulators_life.currency_calculator.R
 import kg.simulators_life.currency_calculator.databinding.FragmentLoadingBinding
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,25 +45,35 @@ class LoadingFragment : BaseFragment<FragmentLoadingBinding, LoadingViewModel>()
         viewModel.getCurrencies(getDate())
     }
 
-    private fun initObserver() = with(binding){
+    private fun initObserver() = with(binding) {
         safeFlowGather {
             viewModel.currencyState.collectLatest {
                 when (it) {
                     is ApiState.Success -> {
                         try {
                             findNavController().navigate(R.id.calculationFragment)
-                        } catch (e: Exception){
+                        } catch (e: Exception) {
                             println(e.message)
                         }
                     }
                     is ApiState.Failure -> {
                         progressBar.isVisible = false
-                        println("----------"+it.msg.message)
                         Toast.makeText(requireContext(), it.msg.message, Toast.LENGTH_LONG).show()
+                        checkDatabase()
                     }
                     is ApiState.Loading -> {
                         progressBar.isVisible = true
                     }
+                }
+            }
+        }
+    }
+
+    private fun checkDatabase() {
+        safeFlowGather {
+            viewModel.values.take(1).collectLatest {
+                if (it) {
+                    findNavController().navigate(R.id.calculationFragment)
                 }
             }
         }
