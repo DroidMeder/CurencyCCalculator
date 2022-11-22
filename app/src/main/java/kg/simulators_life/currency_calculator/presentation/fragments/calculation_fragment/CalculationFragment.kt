@@ -40,6 +40,8 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
 
     override fun initView() {
         super.initView()
+        println("")
+
         if (args != null) {
             val temp = args!!.id
             if (temp != null) {
@@ -49,6 +51,7 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
                     getSavedInstance(temp, "")
                 }
             } else {
+                println("tttt")
                 setLeftValues()
                 setRightValues()
             }
@@ -59,26 +62,54 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
     }
 
     private fun getSavedInstance(value: String, id: String) = with(binding) {
-        swipeRight = true
+        //swipeRight = true
         etLeft.isFocusable = true
         etLeft.requestFocus()
         etRight.clearFocus()
-
+        val temp = value.drop(1)
+        println("--$temp----${args!!.idState!!}----------${args?.inputField.toString()}---------------")
         if (id == "R") {
-            setRightValues(value.drop(1))
-            setLeftValues(args!!.idState!!)
-            viewModel.getCalculation(args!!.idState!!, value.drop(1),
-                args?.inputField.toString(), "*")
+            println(".R--------")
+            safeFlowGather {
+                println("1")
+                //swipeLeft = true
+
+                setRightValues(temp, true)
+                println("2 -----")
+                setLeftValues(args!!.idState!!, true)
+                println("3")
+
+                /*viewModel.getCalculation(args!!.idState!!, temp,
+                    args?.inputField.toString(), "*")*/
+                println("4")
+
+                println("6")
+
+                //getResult()
+                //initWatchers()
+                println("7")
+
+            }
+
         } else {
-            setLeftValues(value.drop(1))
-            setRightValues(args!!.idState!!)
-            viewModel.getCalculation(value.drop(1), args!!.idState!!,
-                args?.inputField.toString(), "*")
+            println("L------")
+            safeFlowGather {
+
+                //swipeRight = true
+
+                setLeftValues(value.drop(1), true)
+                setRightValues(args!!.idState!!, true)
+                /*viewModel.getCalculation(value.drop(1), args!!.idState!!,
+                    args?.inputField.toString(), "*")*/
+                etLeft.setText(args?.inputField.toString())
+                // viewModel.getCalculation(idA, idB, etLeft.text.toString(), "*")
+                //getResult()
+                //initWatchers()
+            }
+
         }
 
-        etLeft.setText(args?.inputField.toString())
-       // viewModel.getCalculation(idA, idB, etLeft.text.toString(), "*")
-        getResult()
+
     }
 
     private fun safeFlowGather(action: suspend () -> Unit) {
@@ -89,24 +120,44 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
         }
     }
 
-    private fun setRightValues(drop: String = "R01235") {
+    private fun setRightValues(drop: String = "R01235", b: Boolean = false) {
+        println("set 1  -----------$drop-----------")
         viewModel.getCurrency(drop, "R")
+        println("set 2  -----------$drop-----------")
         safeFlowGather {
             viewModel.getRightEntity.collectLatest {
+                println("set 3  -----------${it.toString()}-----------")
                 binding.tvRightCurrency.text = it.charCode
                 idB = it.iD.toString()
+
+                if (b) {
+                    println("nnnnnnnnnn1")
+                    binding.etLeft.setText(args?.inputField.toString())
+                }
             }
+
         }
     }
 
-    private fun setLeftValues(drop: String = "R01370") {
+    private fun setLeftValues(drop: String = "R01370", b: Boolean = false) {
+        println("set 01  -----------$drop-----------")
+
         viewModel.getCurrency(drop, "L")
+        println("set 02  -----------$drop-----------")
         safeFlowGather {
             viewModel.getLeftEntity.collectLatest {
+                println("set 03  -----------${it.toString()}-----------")
                 binding.tvLeftCurrency.text = it.charCode
                 idA = it.iD.toString()
+
+                if (b) {
+                    println("nnnnnnnnnn1")
+                    binding.etLeft.setText(args?.inputField.toString())
+                }
             }
+
         }
+
     }
 
     override fun initListener() = with(binding) {
@@ -199,7 +250,9 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
                         etRight.textSize = 11f
                     }
                 }
+                println("wat   1----$clickedRight---------$swipeRight--------")
                 if (clickedRight || swipeRight) {
+                    println("wat   .2-----")
                     viewModel.getCalculation(idA, idB, etRight.text.toString(), "/")
                     swipeRight = false
                     getResult(1)
@@ -229,10 +282,16 @@ class CalculationFragment : BaseFragment<FragmentCalculationBinding, Calculation
                         etLeft.textSize = 11f
                     }
                 }
+                println("wat   3---$clickedLeft-------$swipeLeft----")
+
                 if (clickedLeft || swipeLeft) {
+                    println("wat   .4-----")
+
+                    if (idA.isNotEmpty() && idB.isNotEmpty()){
                     viewModel.getCalculation(idA, idB, etLeft.text.toString(), "*")
                     swipeLeft = false
                     getResult()
+                    }
                 }
             }
         })
