@@ -41,10 +41,8 @@ class CalculationViewModel @Inject constructor(
     }
 
     fun getCalculation(idA: String, idB: String, value: String, operand: String) {
-        println("-000----$idA-----$idB------${value}-----------")
         viewModelScope.launch {
             getCalculationUseCase(idA, idB, value, operand).collectLatest {
-                println("-001----$idA-----$idB------${it.toString()}-----------")
                 if (it != null) {
                     result.emit(it)
                 } else {
